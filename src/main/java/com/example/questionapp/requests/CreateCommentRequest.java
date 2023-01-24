@@ -1,11 +1,12 @@
 package com.example.questionapp.requests;
+
 import lombok.Data;
 
 @Data
-public class CreatePostRequest {
+public class CreateCommentRequest {
 
     private Long id;
-    private String text;
-    private String title;
+    private Long postId;
     private Long userId;
+    private String text;
 }

@@ -4,6 +4,7 @@ import com.example.questionapp.dataAccess.PostRepository;
 import com.example.questionapp.entities.Post;
 import com.example.questionapp.entities.User;
 import com.example.questionapp.requests.CreatePostRequest;
+import com.example.questionapp.requests.UpdatePostRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class PostService {
         this.userService = userService;
     }
 
-    public List<Post> getAllPosts(Optional<Long> userId) {
+    public List<Post> getAllPosts(Optional<Long> userId) {  //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
         if (userId.isPresent()) {   //isPresent in mantığı eğer userId parametresi geldiyse
             return postRepository.findByUserId(userId.get());
         }
@@ -42,5 +43,21 @@ public class PostService {
         post.setTitle(newPostRequest.getTitle());
         post.setUser(user);
         return postRepository.save(post);
+    }
+
+    public Post updatePostById(Long postId, UpdatePostRequest updatePostRequest) {  //bütün postu değiştirmicez ki sadece title ve text alanlarını değiştiricez bu yüzden requests in içine UpdatePostRequest oluşturduk.
+        Optional <Post> post = postRepository.findById(postId);
+        if(post.isPresent()){
+            Post updatePost = post.get();
+            updatePost.setText(updatePostRequest.getText());
+            updatePost.setTitle(updatePostRequest.getTitle());
+            postRepository.save(updatePost);
+            return updatePost;
+        }
+        return null;
+    }
+
+    public void deletePostById(Long postId) {
+        postRepository.deleteById(postId);
     }
 }

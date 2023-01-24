@@ -2,6 +2,7 @@ package com.example.questionapp.controllers;
 
 import com.example.questionapp.entities.Post;
 import com.example.questionapp.requests.CreatePostRequest;
+import com.example.questionapp.requests.UpdatePostRequest;
 import com.example.questionapp.services.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping  // posts?userId=userId  requestin içerisindeki parametrelere (header) bakar
+    @GetMapping  // RequestParam =>  posts?userId=userId  requestin içerisindeki parametrelere (header) bakar
     public List<Post> getAllPosts(@RequestParam Optional<Long> userId) {            //requestparam url içindeki parametre içinden userId ye parse et demek.  (posts?userId={userId}) //parametre yoksa eğer o zaman bütün postları getirir.
         return postService.getAllPosts(userId);
     }
@@ -27,10 +28,21 @@ public class PostController {
         return postService.createPost(newPostRequest);
     }
 
-    @GetMapping("/{postId}")  // posts/postId  direk pathin kendisine bakar
+    @GetMapping("/{postId}")  //PathVariable =>   posts/postId  direk pathin kendisine bakar
     public Post getPostById(@PathVariable Long postId) {
         return postService.getPostById(postId);
     }
+
+    @PutMapping("/{postId}")
+    public Post updatePostById(@PathVariable Long postId, @RequestBody UpdatePostRequest updatePostRequest){
+        return postService.updatePostById(postId,updatePostRequest);
+    }
+
+    @DeleteMapping("/{postId}")
+    public void deletePostById(@PathVariable Long postId){
+        postService.deletePostById(postId);
+    }
+
 
 
 }
