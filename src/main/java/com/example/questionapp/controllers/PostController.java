@@ -3,6 +3,7 @@ package com.example.questionapp.controllers;
 import com.example.questionapp.entities.Post;
 import com.example.questionapp.requests.CreatePostRequest;
 import com.example.questionapp.requests.UpdatePostRequest;
+import com.example.questionapp.responses.PostResponse;
 import com.example.questionapp.services.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class PostController {
     }
 
     @GetMapping  // RequestParam =>  posts?userId=userId  requestin içerisindeki parametrelere (header) bakar
-    public List<Post> getAllPosts(@RequestParam Optional<Long> userId) {            //requestparam url içindeki parametre içinden userId ye parse et demek.  (posts?userId={userId}) //parametre yoksa eğer o zaman bütün postları getirir.
+    public List<PostResponse> getAllPosts(@RequestParam Optional<Long> userId) {            //requestparam url içindeki parametre içinden userId ye parse et demek.  (posts?userId={userId}) //parametre yoksa eğer o zaman bütün postları getirir.
         return postService.getAllPosts(userId);
     }
 

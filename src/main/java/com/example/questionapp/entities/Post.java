@@ -15,9 +15,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id",nullable = false)
-    @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)  //user silinirse postu da sil
     private User user;
 

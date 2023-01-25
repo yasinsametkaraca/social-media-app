@@ -5,10 +5,12 @@ import com.example.questionapp.entities.Post;
 import com.example.questionapp.entities.User;
 import com.example.questionapp.requests.CreatePostRequest;
 import com.example.questionapp.requests.UpdatePostRequest;
+import com.example.questionapp.responses.PostResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -21,11 +23,14 @@ public class PostService {
         this.userService = userService;
     }
 
-    public List<Post> getAllPosts(Optional<Long> userId) {  //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
+    public List<PostResponse> getAllPosts(Optional<Long> userId) {  //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
+        List<Post> postList;
         if (userId.isPresent()) {   //isPresent in mantığı eğer userId parametresi geldiyse
-            return postRepository.findByUserId(userId.get());
+            postList = postRepository.findByUserId(userId.get());
+        }else{
+            postList = postRepository.findAll(); //eğer parametre userıd yoksa tüm postları çeker
         }
-        return postRepository.findAll(); //eğer parametre userıd yoksa tüm postları çeker
+        return postList.stream().map(post -> new PostResponse(post)).collect(Collectors.toList());  //postları teker teker PostResponse a mapledik.
     }
 
     public Post getPostById(Long postId) {
