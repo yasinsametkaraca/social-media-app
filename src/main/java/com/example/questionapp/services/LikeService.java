@@ -35,7 +35,7 @@ public class LikeService {
             list = likeRepository.findByPostId(postId.get());
         }else
             list = likeRepository.findAll();
-        return list.stream().map(like -> new LikeResponse(like)).collect(Collectors.toList());
+        return list.stream().map(like -> new LikeResponse(like)).collect(Collectors.toList());  //Like' ları alıp LikeResponse' a mapledik.
     }
 
     public Like getLikeById(Long LikeId) {

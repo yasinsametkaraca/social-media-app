@@ -4,7 +4,7 @@ import com.example.questionapp.entities.Like;
 import lombok.Data;
 
 @Data
-public class LikeResponse {
+public class LikeResponse {  //user ve postun hepsini dönmek yerine sadece Id lerini dönücez bu yüzden LikeResponse oluşturduk.
 
     private Long id;
     private Long userId;

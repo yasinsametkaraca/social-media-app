@@ -1,8 +1,11 @@
 package com.example.questionapp.responses;
 
 
+import com.example.questionapp.entities.Like;
 import com.example.questionapp.entities.Post;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class PostResponse {  //bu classı kullanmamızın sebebi password gibi bilgileri dönmek istememiz. sadece istediğimiz bilgileri döneriz.
@@ -14,11 +17,13 @@ public class PostResponse {  //bu classı kullanmamızın sebebi password gibi b
     private String text;
     private String title;
 
-    public PostResponse(Post post){ //constructor mapping
+    private List<LikeResponse> postLikes;
+    public PostResponse(Post post, List<LikeResponse> likes){ //constructor mapping
        this.id=post.getId();
        this.userId=post.getUser().getId();
        this.username=post.getUser().getUsername();
        this.title=post.getTitle();
        this.text=post.getText();
+       this.postLikes=likes;
     }
 }

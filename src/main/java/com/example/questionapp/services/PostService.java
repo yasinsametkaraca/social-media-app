@@ -5,7 +5,10 @@ import com.example.questionapp.entities.Post;
 import com.example.questionapp.entities.User;
 import com.example.questionapp.requests.CreatePostRequest;
 import com.example.questionapp.requests.UpdatePostRequest;
+import com.example.questionapp.responses.LikeResponse;
 import com.example.questionapp.responses.PostResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +20,17 @@ public class PostService {
 
     private PostRepository postRepository;
     private UserService userService;
+    private LikeService likeService;
+
 
     public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setLikeService(@Lazy LikeService likeService) {
+        this.likeService = likeService;
     }
 
     public List<PostResponse> getAllPosts(Optional<Long> userId) {  //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
@@ -30,7 +40,9 @@ public class PostService {
         }else{
             postList = postRepository.findAll(); //eğer parametre userıd yoksa tüm postları çeker
         }
-        return postList.stream().map(post -> new PostResponse(post)).collect(Collectors.toList());  //postları teker teker PostResponse a mapledik.
+        return postList.stream().map(post -> {
+            List<LikeResponse> likes = likeService.getAllLikes(Optional.ofNullable(null),Optional.of(post.getId()));
+            return new PostResponse(post,likes);}).collect(Collectors.toList());  //postları teker teker PostResponse a mapledik.
     }
 
     public Post getPostById(Long postId) {
