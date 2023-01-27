@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//spring security sadece username ve password gibi bilgileri içeren extra UserDetails objesi yapmamızı istiyor.
-//authentication işlemleri için bu classi kullanıcaz
+//spring security sadece username ve password gibi bilgileri içeren extra UserDetails objesi yapmamızı istiyor. Authentication işlemleri için bu classi kullanıcaz
 @Getter
 @Setter
 @Data
@@ -31,9 +30,9 @@ public class JWTUserDetails implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static JWTUserDetails create(User user) {        //bize bir user geldiğinde UserDetails objecti donuyoruz.
+    public static JWTUserDetails create(User user) {                                    //bize bir user geldiğinde UserDetails objecti donuyoruz.
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
-        authoritiesList.add(new SimpleGrantedAuthority("user")); //bizde admin yok tek kullanıcı vardır.
+        authoritiesList.add(new SimpleGrantedAuthority("user"));                   //bizde admin yok tek kullanıcı vardır.
         return new JWTUserDetails(user.getId(),user.getUsername(), user.getPassword(), authoritiesList);
     }
 

@@ -33,16 +33,16 @@ public class PostService {
         this.likeService = likeService;
     }
 
-    public List<PostResponse> getAllPosts(Optional<Long> userId) {  //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
+    public List<PostResponse> getAllPosts(Optional<Long> userId) {                       //optionalın mantığı parametre oladabilir olmayadabilir, ikisine özelde çalışır.
         List<Post> postList;
-        if (userId.isPresent()) {   //isPresent in mantığı eğer userId parametresi geldiyse
+        if (userId.isPresent()) {                                                       //isPresent in mantığı eğer userId parametresi geldiyse
             postList = postRepository.findByUserId(userId.get());
         }else{
-            postList = postRepository.findAll(); //eğer parametre userıd yoksa tüm postları çeker
+            postList = postRepository.findAll();                                         //eğer parametre userıd yoksa tüm postları çeker
         }
         return postList.stream().map(post -> {
             List<LikeResponse> likes = likeService.getAllLikes(Optional.ofNullable(null),Optional.of(post.getId()));
-            return new PostResponse(post,likes);}).collect(Collectors.toList());  //postları teker teker PostResponse a mapledik.
+            return new PostResponse(post,likes);}).collect(Collectors.toList());       //postları teker teker PostResponse a mapledik.
     }
 
     public Post getPostById(Long postId) {
@@ -50,7 +50,7 @@ public class PostService {
     }
 
     public Post createPost(CreatePostRequest newPostRequest) {
-        User user = userService.getUserById(newPostRequest.getUserId());  //önce user var mı onu kontrol ederiz.
+        User user = userService.getUserById(newPostRequest.getUserId());            //önce user var mı onu kontrol ederiz.
         if(user==null){
             return null;
         }
