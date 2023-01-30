@@ -2,6 +2,7 @@ package com.example.questionapp.controllers;
 
 import com.example.questionapp.dataAccess.UserRepository;
 import com.example.questionapp.entities.User;
+import com.example.questionapp.responses.UserResponse;
 import com.example.questionapp.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId){
-        return userService.getUserById(userId);
+    public UserResponse getUserById(@PathVariable Long userId){
+        return new UserResponse(userService.getUserById(userId));
     }
 
     @PutMapping("/{userId}")   //update
@@ -41,5 +42,10 @@ public class UserController {
     @DeleteMapping("/{userId}") //delete
     public void deleteUserById(@PathVariable Long userId){
         userService.deleteUserById(userId);
+    }
+
+    @GetMapping("/activity/{userId}")
+    public List<Object> getUserActivityById(@PathVariable Long userId){
+        return userService.getUserActivityById(userId);
     }
 }

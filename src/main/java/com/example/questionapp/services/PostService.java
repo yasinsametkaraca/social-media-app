@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,9 +45,13 @@ public class PostService {
             List<LikeResponse> likes = likeService.getAllLikes(Optional.ofNullable(null),Optional.of(post.getId()));
             return new PostResponse(post,likes);}).collect(Collectors.toList());       //postları teker teker PostResponse a mapledik.
     }
-
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElse(null);
+    }
+    public PostResponse getPostByIdWithLikes(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        List<LikeResponse> likes = likeService.getAllLikes(Optional.ofNullable(null),Optional.of(postId));
+        return new PostResponse(post,likes);
     }
 
     public Post createPost(CreatePostRequest newPostRequest) {
@@ -59,6 +64,7 @@ public class PostService {
         post.setText(newPostRequest.getText());
         post.setTitle(newPostRequest.getTitle());
         post.setUser(user);
+        post.setCreateDate(new Date());
         return postRepository.save(post);
     }
 

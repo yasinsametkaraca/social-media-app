@@ -29,9 +29,14 @@ public class PostController {
         return postService.createPost(newPostRequest);
     }
 
-    @GetMapping("/{postId}")  //PathVariable =>   posts/postId  direk pathin kendisine bakar
+    /*@GetMapping("/{postId}")  //PathVariable =>   posts/postId  direk pathin kendisine bakar
     public Post getPostById(@PathVariable Long postId) {
         return postService.getPostById(postId);
+    }*/
+
+    @GetMapping("/{postId}")  //PathVariable =>   posts/postId  direk pathin kendisine bakar
+    public PostResponse getPostById(@PathVariable Long postId) {
+        return postService.getPostByIdWithLikes(postId);
     }
 
     @PutMapping("/{postId}")
