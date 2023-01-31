@@ -7,12 +7,15 @@ import com.example.questionapp.entities.Post;
 import com.example.questionapp.entities.User;
 import com.example.questionapp.requests.CreateCommentRequest;
 import com.example.questionapp.requests.UpdateCommentRequest;
+import com.example.questionapp.responses.CommentResponse;
+import com.example.questionapp.responses.LikeResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -26,15 +29,17 @@ public class CommentService {
         this.postService = postService;
     }
 
-    public List<Comment> getAllComments(Optional<Long> userId, Optional<Long> postId) {
+    public List<CommentResponse> getAllComments(Optional<Long> userId, Optional<Long> postId) {
+        List<Comment> comments;
         if(userId.isPresent() && postId.isPresent()) {
-            return commentRepository.findByUserIdAndPostId(userId.get(), postId.get());  //get diyince içerisindeki değeri alırız.
+            comments = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());  //get diyince içerisindeki değeri alırız.
         }else if(userId.isPresent()){  //sadece userId gelirse
-            return commentRepository.findByUserId(userId.get());
+            comments =  commentRepository.findByUserId(userId.get());
         }else if (postId.isPresent()){  //sadece postId gelirse
-            return commentRepository.findByPostId(postId.get());
+            comments = commentRepository.findByPostId(postId.get());
         }else
-            return commentRepository.findAll();  //parametrede ikiside gelmezse
+            comments =  commentRepository.findAll();  //parametrede ikiside gelmezse
+        return comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
     }
 
     public Comment getCommentById(Long commentId) {
